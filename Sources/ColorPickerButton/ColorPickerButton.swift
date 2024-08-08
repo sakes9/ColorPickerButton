@@ -36,6 +36,7 @@ public struct ColorPickerButton: View {
     public init(colors: [ColorPickerButton.Color], onSelected: @escaping (Int?) -> Void) {
         self.colors = colors
         self.onSelected = onSelected
+        _selectedColorId = State(initialValue: colors.first?.id) // Initialize selectedColorId with the first color's ID
     }
 
     public var body: some View {
@@ -49,6 +50,7 @@ public struct ColorPickerButton: View {
                         .frame(width: geometry.size.width, height: geometry.size.height)
                         .foregroundColor(colors.first(where: { $0.id == selectedColorId })?.color ?? .black)
                 })
+                .id("colorButton") // Test View ID
                 .popover(isPresented: $isPopoverPresented) {
                     ColorPickerView(selectedColorId: $selectedColorId, isPopoverPresented: $isPopoverPresented, colors: colors, colorSelected: onSelected)
                         .presentationCompactAdaptation(PresentationAdaptation.popover)
