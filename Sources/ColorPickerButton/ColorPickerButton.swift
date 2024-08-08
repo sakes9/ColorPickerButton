@@ -126,5 +126,4 @@ private extension Array {
             .frame(width: 30, height: 30)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-        .background(Color(.systemGray6))
 }
