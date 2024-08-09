@@ -45,6 +45,7 @@ import ColorPickerButton
 import SwiftUI
 
 struct ContentView: View {
+    // Define the color palette
     let colors: [ColorPickerButton.Color] = [
         .init(id: 1, color: .black),
         .init(id: 2, color: .gray),
@@ -58,6 +59,10 @@ struct ContentView: View {
         .init(id: 10, color: .red)
     ]
 
+    // Define the selected color ID
+    let selectedColorId: Int = 5
+
+    // Define the selected color
     @State private var selectedColor: Color = .black
 
     var body: some View {
@@ -67,11 +72,16 @@ struct ContentView: View {
                 .frame(width: 50, height: 50)
                 .foregroundColor(selectedColor)
 
-            ColorPickerButton(colors: colors, onSelected: { selectedColorId in
-                print("Selected color ID: \(String(describing: selectedColorId))")
-                selectedColor = colors.first(where: { $0.id == selectedColorId })?.color ?? .black
-            })
-            .frame(width: 30, height: 30)
+            ColorPickerButton(colors: colors,
+                              selectedColorId: selectedColorId,
+                              onSelected: { selectedColorId in
+                                  print("Selected color ID: \(String(describing: selectedColorId))")
+                                  selectedColor = colors.first(where: { $0.id == selectedColorId })?.color ?? .black
+                              })
+                              .frame(width: 30, height: 30)
+        }
+        .onAppear {
+            selectedColor = colors.first(where: { $0.id == selectedColorId })?.color ?? .black
         }
         .padding()
     }
@@ -81,4 +91,5 @@ struct ContentView: View {
 ### Parameters
 
 - `colors`: An array of `ColorPickerButton.Color` instances that contain the colors to display in the popover.
+- `selectedColorId`: The ID of the Initially selected color.
 - `onSelected`: A callback that is called when a color is selected. It takes the selected color ID as an argument.
