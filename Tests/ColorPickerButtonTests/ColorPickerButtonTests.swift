@@ -42,4 +42,21 @@ final class ColorPickerButtonTests: XCTestCase {
 
         XCTAssertEqual(color, Color.red)
     }
+
+    /// Test the initially selected color when a specific color ID is provided
+    func testInitiallySelectedColorWithProvidedID() throws {
+        let colors: [ColorPickerButton.Color] = [
+            .init(id: 1, color: .red),
+            .init(id: 2, color: .green),
+            .init(id: 3, color: .blue)
+        ]
+        let sut = ColorPickerButton(colors: colors, selectedColorId: 2, onSelected: { _ in })
+        let inspection = try sut.inspect()
+
+        let button = try inspection.find(viewWithId: "colorButton")
+        let image = try button.find(ViewType.Image.self)
+        let color = try image.foregroundColor()
+
+        XCTAssertEqual(color, Color.green) // Expecting the color associated with ID 2 (green) to be selected
+    }
 }
