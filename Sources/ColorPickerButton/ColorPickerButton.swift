@@ -23,20 +23,23 @@ public struct ColorPickerButton: View {
 
     // Properties
     private let colors: [ColorPickerButton.Color] // Color list
+    @State public var selectedColorId: Int?
     private let onSelected: (Int?) -> Void // Action on color selection
 
     // State
     @State private var isPopoverPresented: Bool = false
-    @State private var selectedColorId: Int?
 
     /// Initializer
     /// - Parameters:
     ///   - colors: List of colors
+    ///   - selectedColorId: Selected color ID
     ///   - onSelected: Action on color selection
-    public init(colors: [ColorPickerButton.Color], onSelected: @escaping (Int?) -> Void) {
+    public init(colors: [ColorPickerButton.Color],
+                selectedColorId: Int? = nil,
+                onSelected: @escaping (Int?) -> Void) {
         self.colors = colors
+        self._selectedColorId = State(initialValue: selectedColorId ?? colors.first?.id) // Initialize selectedColorId with the first color's ID
         self.onSelected = onSelected
-        _selectedColorId = State(initialValue: colors.first?.id) // Initialize selectedColorId with the first color's ID
     }
 
     public var body: some View {
@@ -120,10 +123,12 @@ private extension Array {
 
     return
         VStack {
-            ColorPickerButton(colors: colors, onSelected: { selectedColorId in
-                print("Selected color ID: \(String(describing: selectedColorId))")
-            })
-            .frame(width: 30, height: 30)
+            ColorPickerButton(colors: colors,
+                              selectedColorId: 5,
+                              onSelected: { selectedColorId in
+                                  print("Selected color ID: \(String(describing: selectedColorId))")
+                              })
+                              .frame(width: 30, height: 30)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
 }
